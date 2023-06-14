@@ -42,8 +42,11 @@ public class DisclaimerControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.created_at").exists())
+                .andExpect(jsonPath("$.updated_at").exists())
                 .andExpect(jsonPath("$.name").value("John Doe"))
-                .andExpect(jsonPath("$.age").value(30));
+                .andExpect(jsonPath("$.version").value("1.0"))
+                .andExpect(jsonPath("$.text").value("a text"));
     }
 
 }
