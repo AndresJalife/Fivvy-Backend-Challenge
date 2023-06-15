@@ -48,10 +48,4 @@ public class DisclaimerControllerIntegrationTests {
                 .andExpect(jsonPath("$.version").value("1.0"))
                 .andExpect(jsonPath("$.text").value("a text"));
     }
-
-    // Test class added ONLY to cover main() invocation not covered by application tests.
-    @Test
-    public void main() {
-        BackendChallengeApplication.main(new String[] {});
-    }
 }
