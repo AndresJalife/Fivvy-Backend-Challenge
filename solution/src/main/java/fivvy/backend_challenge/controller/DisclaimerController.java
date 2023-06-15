@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for disclaiemrs
  */
@@ -71,5 +73,16 @@ public class DisclaimerController {
     public ResponseEntity<DisclaimerDTO> getDisclaimer(@PathVariable Long id)
             throws DisclaimerNotFoundException {
         return ResponseEntity.ok().body(disclaimerService.getDisclaimerById(id));
+    }
+
+    /**
+     * Gets all disclaimers
+     *
+     * @return ResponseEntity:
+     * * * OK(200) - When successfully updated.
+     */
+    @GetMapping
+    public ResponseEntity<List<DisclaimerDTO>> getAllDisclaimers() {
+        return ResponseEntity.ok().body(disclaimerService.getAllDisclaimers());
     }
 }

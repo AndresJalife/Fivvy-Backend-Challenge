@@ -46,7 +46,11 @@ public class DisclaimerControllerIntegrationTests {
     }
 
     private MvcResult creatBasiceDisclaimer() throws Exception {
-        DisclaimerDTO disclaimerDTO = getDisclaimerDTO("John Doe", "a text", "1.0");
+        return createDisclaimerWithName("John Doe");
+    }
+
+    private MvcResult createDisclaimerWithName(String name) throws Exception {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(name, "a text", "1.0");
         return mockMvc.perform(post("/disclaimer")
                 .content(objectMapper.writeValueAsString(disclaimerDTO))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -157,5 +161,29 @@ public class DisclaimerControllerIntegrationTests {
         mockMvc.perform(get("/disclaimer/{id}", nonExistentDisclaimerId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    }
+
+    /**
+     * Creates two disclaimers and then gets them all successfully
+     */
+    @Test
+    public void createAndGetAllDisclaimersSuccesfullyTest() throws Exception {
+        creatBasiceDisclaimer();
+        createDisclaimerWithName("Jane Doe");
+
+        mockMvc.perform(get("/disclaimer"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].id").exists())
+                .andExpect(jsonPath("$.[0].name").value("John Doe"))
+                .andExpect(jsonPath("$.[0].version").value("1.0"))
+                .andExpect(jsonPath("$.[0].created_at").exists())
+                .andExpect(jsonPath("$.[0].updated_at").exists())
+                .andExpect(jsonPath("$.[0].text").value("a text"))
+                .andExpect(jsonPath("$.[1].id").exists())
+                .andExpect(jsonPath("$.[1].name").value("Jane Doe"))
+                .andExpect(jsonPath("$.[1].version").value("1.0"))
+                .andExpect(jsonPath("$.[1].created_at").exists())
+                .andExpect(jsonPath("$.[1].updated_at").exists())
+                .andExpect(jsonPath("$.[1].text").value("a text"));
     }
 }

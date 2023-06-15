@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Service for disclaimers
  */
@@ -80,5 +82,19 @@ public class DisclaimerService {
                 .findById(id)
                 .orElseThrow(DisclaimerNotFoundException::new);
         return new DisclaimerDTO(disclaimer);
+    }
+
+    /**
+     * Gets all disclaimers
+     *
+     * @return all disclaimers
+     */
+    public List<DisclaimerDTO> getAllDisclaimers() {
+        log.info("Getting all disclaimers");
+        return disclaimerRepository
+                .findAll()
+                .stream()
+                .map(DisclaimerDTO::new)
+                .toList();
     }
 }
