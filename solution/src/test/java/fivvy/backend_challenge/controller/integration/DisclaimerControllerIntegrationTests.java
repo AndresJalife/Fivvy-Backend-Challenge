@@ -1,6 +1,7 @@
 package fivvy.backend_challenge.controller.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fivvy.backend_challenge.BackendChallengeApplication;
 import fivvy.backend_challenge.dto.DisclaimerDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration Tests for the Disclaimer Controller
  */
 @AutoConfigureMockMvc
-//@RunWith(SpringRunner.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DisclaimerControllerIntegrationTests {
@@ -33,7 +33,10 @@ public class DisclaimerControllerIntegrationTests {
 
     @Test
     public void createDisclaimerSuccesfullyTest() throws Exception {
-        DisclaimerDTO disclaimerDTO = new DisclaimerDTO("John Doe", "a text", "1.0");
+        DisclaimerDTO disclaimerDTO = new DisclaimerDTO();
+        disclaimerDTO.setName("John Doe");
+        disclaimerDTO.setVersion("1.0");
+        disclaimerDTO.setText("a text");
         mockMvc.perform(post("/disclaimer")
                         .content(objectMapper.writeValueAsString(disclaimerDTO))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -44,5 +47,11 @@ public class DisclaimerControllerIntegrationTests {
                 .andExpect(jsonPath("$.name").value("John Doe"))
                 .andExpect(jsonPath("$.version").value("1.0"))
                 .andExpect(jsonPath("$.text").value("a text"));
+    }
+
+    // Test class added ONLY to cover main() invocation not covered by application tests.
+    @Test
+    public void main() {
+        BackendChallengeApplication.main(new String[] {});
     }
 }

@@ -1,21 +1,14 @@
 package fivvy.backend_challenge.model;
-
-
 import fivvy.backend_challenge.dto.DisclaimerDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.sql.Timestamp;
-
 @Entity
 @Table(name = "disclaimer", schema = "public")
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class Disclaimer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

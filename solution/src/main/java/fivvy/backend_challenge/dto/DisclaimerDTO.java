@@ -3,35 +3,33 @@ package fivvy.backend_challenge.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fivvy.backend_challenge.model.Disclaimer;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Data Transfer Object for a Disclaimer
  */
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
 public class DisclaimerDTO {
+
     private Long id;
+
+    @Setter
     private String name;
+
+    @Setter
     private String text;
+
+    @Setter
     private String version;
     @JsonProperty("created_at")
     private Long createdAt;
     @JsonProperty("updated_at")
     private Long updatedAt;
-
-    /**
-     * Basic constructor
-     */
-    public DisclaimerDTO(String name, String text, String version) {
-        this.name = name;
-        this.text = text;
-        this.version = version;
-    }
 
     /**
      * Constructor from a Disclaimer
@@ -42,11 +40,7 @@ public class DisclaimerDTO {
         this.name = disclaimer.getName();
         this.text = disclaimer.getText();
         this.version = disclaimer.getVersion();
-        if (disclaimer.getCreatedAt() != null) {
-            this.createdAt = disclaimer.getCreatedAt().getTime();
-        }
-        if (disclaimer.getUpdatedAt() != null) {
-            this.updatedAt = disclaimer.getUpdatedAt().getTime();
-        }
+        this.createdAt = disclaimer.getCreatedAt().getTime();
+        this.updatedAt = disclaimer.getUpdatedAt().getTime();
     }
 }
