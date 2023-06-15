@@ -25,6 +25,18 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     /**
+     * Generates a map with a message
+     *
+     * @param body the message
+     * @return the map
+     */
+    public static Map<String, String> generateErrorBodyMap(String body) {
+        Map<String, String> bodyMap = new HashMap<>();
+        bodyMap.put("error", body);
+        return bodyMap;
+    }
+
+    /**
      * Handles DisclaimerNotFoundException
      *
      * @param exception the exception to handle
@@ -37,6 +49,7 @@ public class ControllerExceptionHandler {
 
     /**
      * Generates a ResponseEntity with a 404 status and a body with the error
+     *
      * @param message the error message
      * @return ResponseEntity with the error
      */
@@ -45,16 +58,5 @@ public class ControllerExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(generateErrorBodyMap(message));
-    }
-
-    /**
-     * Generates a map with a message
-     * @param body the message
-     * @return the map
-     */
-    public static Map<String, String> generateErrorBodyMap(String body) {
-        Map<String, String> bodyMap = new HashMap<>();
-        bodyMap.put("error", body);
-        return bodyMap;
     }
 }

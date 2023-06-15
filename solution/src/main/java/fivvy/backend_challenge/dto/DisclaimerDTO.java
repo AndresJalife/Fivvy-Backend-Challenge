@@ -3,7 +3,6 @@ package fivvy.backend_challenge.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fivvy.backend_challenge.model.Disclaimer;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +32,7 @@ public class DisclaimerDTO {
 
     /**
      * Constructor from a Disclaimer
+     *
      * @param disclaimer Model Disclaimer
      */
     public DisclaimerDTO(Disclaimer disclaimer) {

@@ -22,6 +22,7 @@ public class DisclaimerService {
 
     /**
      * Creates a disclaimer
+     *
      * @param disclaimerDTO the disclaimer to create
      * @return the created disclaimer
      */
@@ -35,6 +36,7 @@ public class DisclaimerService {
 
     /**
      * Deletes a disclaimer
+     *
      * @param id the id of the disclaimer to delete
      * @return the deleted disclaimer
      */

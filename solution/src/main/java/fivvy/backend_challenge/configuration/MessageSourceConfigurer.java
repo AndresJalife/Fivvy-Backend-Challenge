@@ -1,6 +1,5 @@
 package fivvy.backend_challenge.configuration;
 
-import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
