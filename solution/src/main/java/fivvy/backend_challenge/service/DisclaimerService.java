@@ -1,6 +1,7 @@
 package fivvy.backend_challenge.service;
 
 import fivvy.backend_challenge.dto.DisclaimerDTO;
+import fivvy.backend_challenge.exception.disclaimer.DisclaimerNotFoundException;
 import fivvy.backend_challenge.model.Disclaimer;
 import fivvy.backend_challenge.repository.DisclaimerRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,20 @@ public class DisclaimerService {
         Disclaimer disclaimer = disclaimerRepository.save(new Disclaimer(disclaimerDTO));
         return new DisclaimerDTO(disclaimer);
 
+    }
+
+    /**
+     * Deletes a disclaimer
+     * @param id the id of the disclaimer to delete
+     * @return the deleted disclaimer
+     */
+    @Transactional
+    public DisclaimerDTO deleteDisclaimer(Long id) throws DisclaimerNotFoundException {
+        log.info("Deleting disclaimer");
+        Disclaimer disclaimer = disclaimerRepository
+                .findById(id)
+                .orElseThrow(DisclaimerNotFoundException::new);
+        disclaimerRepository.delete(disclaimer);
+        return new DisclaimerDTO(disclaimer);
     }
 }
