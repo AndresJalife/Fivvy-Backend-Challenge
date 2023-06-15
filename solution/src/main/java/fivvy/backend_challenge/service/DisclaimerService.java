@@ -49,4 +49,21 @@ public class DisclaimerService {
         disclaimerRepository.delete(disclaimer);
         return new DisclaimerDTO(disclaimer);
     }
+
+    /**
+     * Updates a disclaimer
+     *
+     * @param disclaimerDTO the disclaimer to update
+     * @return the updated disclaimer
+     */
+    @Transactional
+    public DisclaimerDTO updateDisclaimer(DisclaimerDTO disclaimerDTO) throws DisclaimerNotFoundException {
+        log.info("Updating disclaimer");
+        Disclaimer disclaimer = disclaimerRepository
+                .findById(disclaimerDTO.getId())
+                .orElseThrow(DisclaimerNotFoundException::new);
+        disclaimer.update(disclaimerDTO);
+        disclaimerRepository.save(disclaimer);
+        return new DisclaimerDTO(disclaimer);
+    }
 }

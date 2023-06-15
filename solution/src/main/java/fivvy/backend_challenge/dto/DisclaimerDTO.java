@@ -15,6 +15,7 @@ import lombok.Setter;
 @Getter
 public class DisclaimerDTO {
 
+    @Setter
     private Long id;
 
     @Setter

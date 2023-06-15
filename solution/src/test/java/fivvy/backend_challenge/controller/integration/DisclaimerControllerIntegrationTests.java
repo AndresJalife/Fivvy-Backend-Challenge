@@ -14,12 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,6 +42,13 @@ public class DisclaimerControllerIntegrationTests {
         disclaimerDTO.setName(name);
         disclaimerDTO.setText(text);
         disclaimerDTO.setVersion(version);
+        return disclaimerDTO;
+    }
+
+    private DisclaimerDTO getDisclaimerDTO(Long id, String name, String text,
+                                           String version) {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(name, text, version);
+        disclaimerDTO.setId(id);
         return disclaimerDTO;
     }
 
@@ -86,6 +93,48 @@ public class DisclaimerControllerIntegrationTests {
     public void deleteDisclaimerNotFoundTest() throws Exception {
         Long nonExistentDisclaimerId = 1L;
         mockMvc.perform(delete("/disclaimer/{id}", nonExistentDisclaimerId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    }
+
+    /**
+     * Creates and Updates a disclaimer successfully
+     */
+    @Test
+    public void createAndUpdateDisclaimerSuccesfullyTest() throws Exception {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO("John Doe", "a text", "1.0");
+        MvcResult result = mockMvc.perform(post("/disclaimer")
+                .content(objectMapper.writeValueAsString(disclaimerDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        Integer disclaimerId = JsonPath.read(result.getResponse().getContentAsString(),
+                "$.id");
+
+        disclaimerDTO = getDisclaimerDTO(disclaimerId.longValue(), "Jane Doe",
+                "another text", "2.0");
+
+        mockMvc.perform(patch("/disclaimer")
+                .content(objectMapper.writeValueAsString(disclaimerDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(disclaimerId))
+                .andExpect(jsonPath("$.name").value("Jane Doe"))
+                .andExpect(jsonPath("$.version").value("2.0"))
+                .andExpect(jsonPath("$.created_at").exists())
+                .andExpect(jsonPath("$.updated_at").exists())
+                .andExpect(jsonPath("$.text").value("another text"));
+    }
+
+    /**
+     * Tries to update a disclaimer that does not exist and expects a 404
+     */
+    @Test
+    public void updateDisclaimerNotFoundTest() throws Exception {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(1L, "John Doe", "a text", "1.0");
+        mockMvc.perform(patch("/disclaimer")
+                .content(objectMapper.writeValueAsString(disclaimerDTO))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Disclaimer not found"));
     }

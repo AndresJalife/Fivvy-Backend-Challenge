@@ -32,9 +32,22 @@ public class Disclaimer {
         this.version = disclaimerDTO.getVersion();
     }
 
+    /**
+     * Sets the creation and update timestamps when its created
+     */
     @PrePersist
     protected void onCreate() {
         createdAt = new Timestamp(System.currentTimeMillis());
         updatedAt = createdAt;
     }
+
+    /**
+     * Updates the disclaimer
+     *
+     * @param disclaimerDTO the disclaimer DTO to update
+     */
+    public void update(DisclaimerDTO disclaimerDTO) {
+        this.name = disclaimerDTO.getName();
+        this.text = disclaimerDTO.getText();
+        this.version = disclaimerDTO.getVersion();}
 }

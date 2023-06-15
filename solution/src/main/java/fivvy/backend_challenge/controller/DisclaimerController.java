@@ -37,9 +37,23 @@ public class DisclaimerController {
      * @param id the id of the disclaimer to delete
      * @return ResponseEntity:
      * * * CREATED(201) - When successfully created.
+     * * * NOT_FOUND(404) - When disclaimer not found.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<DisclaimerDTO> deleteDisclaimer(@PathVariable Long id) throws DisclaimerNotFoundException {
         return ResponseEntity.ok().body(disclaimerService.deleteDisclaimer(id));
+    }
+
+    /**
+     * Updates a disclaimer
+     *
+     * @param disclaimerDTO the disclaimer to update
+     * @return ResponseEntity:
+     * * * OK(200) - When successfully updated.
+     * * * NOT_FOUND(404) - When disclaimer not found.
+     */
+    @PatchMapping
+    public ResponseEntity<DisclaimerDTO> updateDisclaimer(@RequestBody DisclaimerDTO disclaimerDTO) throws DisclaimerNotFoundException {
+        return ResponseEntity.ok().body(disclaimerService.updateDisclaimer(disclaimerDTO));
     }
 }
