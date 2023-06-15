@@ -1,21 +1,17 @@
 package fivvy.backend_challenge.controller.integration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fivvy.backend_challenge.dto.DisclaimerDTO;
-import lombok.AllArgsConstructor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration Tests for the Disclaimer Controller
  */
 @AutoConfigureMockMvc
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DisclaimerControllerIntegrationTests {
@@ -35,7 +32,7 @@ public class DisclaimerControllerIntegrationTests {
     public ObjectMapper objectMapper;
 
     @Test
-    public void createDisclaimerSuccesfully() throws Exception {
+    public void createDisclaimerSuccesfullyTest() throws Exception {
         DisclaimerDTO disclaimerDTO = new DisclaimerDTO("John Doe", "a text", "1.0");
         mockMvc.perform(post("/disclaimer")
                         .content(objectMapper.writeValueAsString(disclaimerDTO))
@@ -48,5 +45,4 @@ public class DisclaimerControllerIntegrationTests {
                 .andExpect(jsonPath("$.version").value("1.0"))
                 .andExpect(jsonPath("$.text").value("a text"));
     }
-
 }

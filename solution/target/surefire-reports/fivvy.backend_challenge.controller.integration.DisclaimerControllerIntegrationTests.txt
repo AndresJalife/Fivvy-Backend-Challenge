@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: fivvy.backend_challenge.controller.integration.DisclaimerControllerIntegrationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.73 s - in fivvy.backend_challenge.controller.integration.DisclaimerControllerIntegrationTests

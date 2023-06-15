@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "disclaimer", schema = "public")
 @Data
@@ -21,9 +23,15 @@ public class Disclaimer {
     private String text;
     private String version;
     @Column(name = "created_at")
-    private Long createdAt;
+    private Timestamp createdAt;
     @Column(name = "updated_at")
-    private Long updatedAt;
+    private Timestamp updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = createdAt;
+    }
 
     /**
      * Base constructor

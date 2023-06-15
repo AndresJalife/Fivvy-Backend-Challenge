@@ -42,7 +42,11 @@ public class DisclaimerDTO {
         this.name = disclaimer.getName();
         this.text = disclaimer.getText();
         this.version = disclaimer.getVersion();
-        this.createdAt = disclaimer.getCreatedAt();
-        this.updatedAt = disclaimer.getUpdatedAt();
+        if (disclaimer.getCreatedAt() != null) {
+            this.createdAt = disclaimer.getCreatedAt().getTime();
+        }
+        if (disclaimer.getUpdatedAt() != null) {
+            this.updatedAt = disclaimer.getUpdatedAt().getTime();
+        }
     }
 }
