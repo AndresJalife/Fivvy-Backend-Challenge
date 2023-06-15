@@ -56,4 +56,19 @@ public class DisclaimerController {
     public ResponseEntity<DisclaimerDTO> updateDisclaimer(@RequestBody DisclaimerDTO disclaimerDTO) throws DisclaimerNotFoundException {
         return ResponseEntity.ok().body(disclaimerService.updateDisclaimer(disclaimerDTO));
     }
+
+    /**
+     * Gets a disclaimer
+     *
+     * @param id the id of the disclaimer to get
+     * @return ResponseEntity:
+     * * * OK(200) - When successfully updated.
+     * * * NOT_FOUND(404) - When disclaimer not found.
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<DisclaimerDTO> getDisclaimer(@PathVariable Long id) throws DisclaimerNotFoundException {
+        return ResponseEntity.ok().body(disclaimerService.getDisclaimer(id));
+    }
+
+
 }

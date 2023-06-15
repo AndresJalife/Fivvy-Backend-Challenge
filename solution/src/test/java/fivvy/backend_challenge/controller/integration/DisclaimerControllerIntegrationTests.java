@@ -2,20 +2,13 @@ package fivvy.backend_challenge.controller.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import fivvy.backend_challenge.BackendChallengeApplication;
 import fivvy.backend_challenge.dto.DisclaimerDTO;
-import fivvy.backend_challenge.service.DisclaimerService;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -52,6 +45,14 @@ public class DisclaimerControllerIntegrationTests {
         return disclaimerDTO;
     }
 
+    private MvcResult creatBasiceDisclaimer() throws Exception {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO("John Doe", "a text", "1.0");
+        return mockMvc.perform(post("/disclaimer")
+                .content(objectMapper.writeValueAsString(disclaimerDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+    }
+
     @Test
     public void createDisclaimerSuccesfullyTest() throws Exception {
         DisclaimerDTO disclaimerDTO = getDisclaimerDTO("John Doe", "a text", "1.0");
@@ -72,12 +73,7 @@ public class DisclaimerControllerIntegrationTests {
      */
     @Test
     public void createAndDeleteDisclaimerSuccesfullyTest() throws Exception {
-        DisclaimerDTO disclaimerDTO = getDisclaimerDTO("John Doe", "a text", "1.0");
-        MvcResult result = mockMvc.perform(post("/disclaimer")
-                .content(objectMapper.writeValueAsString(disclaimerDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
+        MvcResult result = creatBasiceDisclaimer();
         Integer disclaimerId = JsonPath.read(result.getResponse().getContentAsString(),
                 "$.id");
 
@@ -102,18 +98,12 @@ public class DisclaimerControllerIntegrationTests {
      */
     @Test
     public void createAndUpdateDisclaimerSuccesfullyTest() throws Exception {
-        DisclaimerDTO disclaimerDTO = getDisclaimerDTO("John Doe", "a text", "1.0");
-        MvcResult result = mockMvc.perform(post("/disclaimer")
-                .content(objectMapper.writeValueAsString(disclaimerDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
+        MvcResult result = creatBasiceDisclaimer();
         Integer disclaimerId = JsonPath.read(result.getResponse().getContentAsString(),
                 "$.id");
-
-        disclaimerDTO = getDisclaimerDTO(disclaimerId.longValue(), "Jane Doe",
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(disclaimerId.longValue(), "Jane " +
+                        "Doe",
                 "another text", "2.0");
-
         mockMvc.perform(patch("/disclaimer")
                 .content(objectMapper.writeValueAsString(disclaimerDTO))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -137,5 +127,24 @@ public class DisclaimerControllerIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    }
+
+    /**
+     * Creates a disclaimer and then gets it successfully
+     */
+    @Test
+    public void createAndGetDisclaimerSuccesfullyTest() throws Exception {
+        MvcResult result = creatBasiceDisclaimer();
+        Integer disclaimerId = JsonPath.read(result.getResponse().getContentAsString(),
+                "$.id");
+
+        mockMvc.perform(get("/disclaimer/{id}", disclaimerId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(disclaimerId))
+                .andExpect(jsonPath("$.name").value("John Doe"))
+                .andExpect(jsonPath("$.version").value("1.0"))
+                .andExpect(jsonPath("$.created_at").exists())
+                .andExpect(jsonPath("$.updated_at").exists())
+                .andExpect(jsonPath("$.text").value("a text"));
     }
 }

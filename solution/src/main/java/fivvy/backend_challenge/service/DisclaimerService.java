@@ -66,4 +66,19 @@ public class DisclaimerService {
         disclaimerRepository.save(disclaimer);
         return new DisclaimerDTO(disclaimer);
     }
+
+    /**
+     * Gets a disclaimer
+     *
+     * @param id the id of the disclaimer to get
+     * @return the disclaimer
+     */
+    @Transactional(readOnly = true)
+    public DisclaimerDTO getDisclaimer(Long id) throws DisclaimerNotFoundException {
+        log.info("Getting disclaimer");
+        Disclaimer disclaimer = disclaimerRepository
+                .findById(id)
+                .orElseThrow(DisclaimerNotFoundException::new);
+        return new DisclaimerDTO(disclaimer);
+    }
 }
