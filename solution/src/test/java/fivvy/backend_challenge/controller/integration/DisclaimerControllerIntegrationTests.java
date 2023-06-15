@@ -147,4 +147,15 @@ public class DisclaimerControllerIntegrationTests {
                 .andExpect(jsonPath("$.updated_at").exists())
                 .andExpect(jsonPath("$.text").value("a text"));
     }
+
+    /**
+     * Tries to get a disclaimer that does not exist and expects a 404
+     */
+    @Test
+    public void getDisclaimerNotFoundTest() throws Exception {
+        Long nonExistentDisclaimerId = 1L;
+        mockMvc.perform(get("/disclaimer/{id}", nonExistentDisclaimerId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    }
 }

@@ -40,7 +40,8 @@ public class DisclaimerController {
      * * * NOT_FOUND(404) - When disclaimer not found.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<DisclaimerDTO> deleteDisclaimer(@PathVariable Long id) throws DisclaimerNotFoundException {
+    public ResponseEntity<DisclaimerDTO> deleteDisclaimer(@PathVariable Long id)
+            throws DisclaimerNotFoundException {
         return ResponseEntity.ok().body(disclaimerService.deleteDisclaimer(id));
     }
 
@@ -53,7 +54,8 @@ public class DisclaimerController {
      * * * NOT_FOUND(404) - When disclaimer not found.
      */
     @PatchMapping
-    public ResponseEntity<DisclaimerDTO> updateDisclaimer(@RequestBody DisclaimerDTO disclaimerDTO) throws DisclaimerNotFoundException {
+    public ResponseEntity<DisclaimerDTO> updateDisclaimer(@RequestBody DisclaimerDTO disclaimerDTO)
+            throws DisclaimerNotFoundException {
         return ResponseEntity.ok().body(disclaimerService.updateDisclaimer(disclaimerDTO));
     }
 
@@ -66,9 +68,8 @@ public class DisclaimerController {
      * * * NOT_FOUND(404) - When disclaimer not found.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<DisclaimerDTO> getDisclaimer(@PathVariable Long id) throws DisclaimerNotFoundException {
-        return ResponseEntity.ok().body(disclaimerService.getDisclaimer(id));
+    public ResponseEntity<DisclaimerDTO> getDisclaimer(@PathVariable Long id)
+            throws DisclaimerNotFoundException {
+        return ResponseEntity.ok().body(disclaimerService.getDisclaimerById(id));
     }
-
-
 }

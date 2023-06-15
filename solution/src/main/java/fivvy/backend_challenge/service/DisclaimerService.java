@@ -74,7 +74,7 @@ public class DisclaimerService {
      * @return the disclaimer
      */
     @Transactional(readOnly = true)
-    public DisclaimerDTO getDisclaimer(Long id) throws DisclaimerNotFoundException {
+    public DisclaimerDTO getDisclaimerById(Long id) throws DisclaimerNotFoundException {
         log.info("Getting disclaimer");
         Disclaimer disclaimer = disclaimerRepository
                 .findById(id)
