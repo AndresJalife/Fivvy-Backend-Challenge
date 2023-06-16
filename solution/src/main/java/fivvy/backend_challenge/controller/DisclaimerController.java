@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Controller for disclaiemrs
+ * Controller for disclaimers
  */
 @RestController
 @RequestMapping("/disclaimer")

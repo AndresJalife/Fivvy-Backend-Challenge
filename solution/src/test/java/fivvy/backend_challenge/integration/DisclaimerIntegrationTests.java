@@ -1,4 +1,4 @@
-package fivvy.backend_challenge.controller.integration;
+package fivvy.backend_challenge.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -13,17 +13,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Integration Tests for the Disclaimer Controller
+ * Integration Tests for the Disclaimer Entity
  */
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class DisclaimerControllerIntegrationTests {
+public class DisclaimerIntegrationTests {
 
     @Autowired
     public MockMvc mockMvc;

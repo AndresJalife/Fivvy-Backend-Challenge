@@ -21,7 +21,7 @@ services:
     container_name: backend_challenge
     image: openjdk:17
     volumes:
-      - ./target:/app
+      - ./backend_challenge.jar:/app/backend_challenge.jar
     working_dir: /app
     command: java -jar backend_challenge.jar
     ports:
