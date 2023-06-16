@@ -2,6 +2,7 @@ package fivvy.backend_challenge.controller;
 
 import fivvy.backend_challenge.dto.DisclaimerDTO;
 import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
+import fivvy.backend_challenge.exception.IdMissingException;
 import fivvy.backend_challenge.service.DisclaimerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ public class DisclaimerController {
      */
     @PatchMapping
     public ResponseEntity<DisclaimerDTO> updateDisclaimer(@RequestBody DisclaimerDTO disclaimerDTO)
-            throws DisclaimerNotFoundException {
+            throws DisclaimerNotFoundException, IdMissingException {
         return ResponseEntity.ok().body(disclaimerService.updateDisclaimer(disclaimerDTO));
     }
 

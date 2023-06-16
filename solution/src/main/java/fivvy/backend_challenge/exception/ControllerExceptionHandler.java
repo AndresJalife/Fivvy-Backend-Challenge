@@ -47,6 +47,17 @@ public class ControllerExceptionHandler {
     }
 
     /**
+     * Handles IdMissingException
+     *
+     * @param exception the exception to handle
+     * @return ResponseEntity with the error
+     */
+    @ExceptionHandler(IdMissingException.class)
+    public ResponseEntity<Map<String, String>> handle(IdMissingException exception) {
+        return getNotFoundResponse(exception.getMessage());
+    }
+
+    /**
      * Generates a ResponseEntity with a 404 status and a body with the error
      *
      * @param message the error message

@@ -108,6 +108,19 @@ public class DisclaimerControllerIntegrationTests {
     }
 
     /**
+     * Tries to update a disclaimer without the id and expects a 404
+     */
+    @Test
+    public void updateDisclaimerWithIdMissingTest() throws Exception {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(null, "John Doe", "a text", "1.0");
+        mockMvc.perform(patch("/disclaimer")
+                .content(objectMapper.writeValueAsString(disclaimerDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Missing Id"));
+    }
+
+    /**
      * Creates a disclaimer and then gets it successfully
      */
     @Test

@@ -2,6 +2,7 @@ package fivvy.backend_challenge.service;
 
 import fivvy.backend_challenge.dto.DisclaimerDTO;
 import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
+import fivvy.backend_challenge.exception.IdMissingException;
 import fivvy.backend_challenge.model.Disclaimer;
 import fivvy.backend_challenge.repository.DisclaimerRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,8 +60,11 @@ public class DisclaimerService {
      * @return the updated disclaimer
      */
     @Transactional
-    public DisclaimerDTO updateDisclaimer(DisclaimerDTO disclaimerDTO) throws DisclaimerNotFoundException {
+    public DisclaimerDTO updateDisclaimer(DisclaimerDTO disclaimerDTO) throws DisclaimerNotFoundException, IdMissingException {
         log.info("Updating disclaimer");
+        if (disclaimerDTO.getId() == null) {
+            throw new IdMissingException();
+        }
         Disclaimer disclaimer = disclaimerRepository
                 .findById(disclaimerDTO.getId())
                 .orElseThrow(DisclaimerNotFoundException::new);
