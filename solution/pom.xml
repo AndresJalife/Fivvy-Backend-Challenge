@@ -10,7 +10,7 @@
     </parent>
     <groupId>fivvy</groupId>
     <artifactId>backend_challenge</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>backend_challenge</name>
     <description>backend_challenge</description>
     <properties>
@@ -60,6 +60,7 @@
     </dependencies>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

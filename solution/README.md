@@ -1,4 +1,5 @@
-mvn clean test -DSERVER=localhost -DDATABASE_USERNAME=postgres -DDATABASE_PASSWORD=postgres
+mvn clean test -DSERVER=localhost -DDATABASE_USERNAME=postgres -DDATABASE_PASSWORD=postgres -DDATABASE_PORT=10123
+mvn clean package -DSERVER=localhost -DDATABASE_USERNAME=postgres -DDATABASE_PASSWORD=postgres -DDATABASE_PORT=10123
 
 - Exception handler for general handling
 - i18n for internationalization

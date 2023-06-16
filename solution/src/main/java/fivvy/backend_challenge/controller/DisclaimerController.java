@@ -1,7 +1,7 @@
 package fivvy.backend_challenge.controller;
 
 import fivvy.backend_challenge.dto.DisclaimerDTO;
-import fivvy.backend_challenge.exception.disclaimer.DisclaimerNotFoundException;
+import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
 import fivvy.backend_challenge.service.DisclaimerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,13 +76,14 @@ public class DisclaimerController {
     }
 
     /**
-     * Gets all disclaimers
+     * Gets all disclaimers.
+     * If text is provided, it will filter the disclaimers by text.
      *
      * @return ResponseEntity:
      * * * OK(200) - When successfully updated.
      */
     @GetMapping
-    public ResponseEntity<List<DisclaimerDTO>> getAllDisclaimers() {
-        return ResponseEntity.ok().body(disclaimerService.getAllDisclaimers());
+    public ResponseEntity<List<DisclaimerDTO>> getAllDisclaimers(@RequestParam(required = false) String text) {
+        return ResponseEntity.ok().body(disclaimerService.getAllDisclaimers(text));
     }
 }

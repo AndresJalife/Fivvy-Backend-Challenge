@@ -1,7 +1,7 @@
 package fivvy.backend_challenge.service;
 
 import fivvy.backend_challenge.dto.DisclaimerDTO;
-import fivvy.backend_challenge.exception.disclaimer.DisclaimerNotFoundException;
+import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
 import fivvy.backend_challenge.model.Disclaimer;
 import fivvy.backend_challenge.repository.DisclaimerRepository;
 import lombok.RequiredArgsConstructor;
@@ -86,14 +86,20 @@ public class DisclaimerService {
 
     /**
      * Gets all disclaimers
+     * If text is provided, it will filter the disclaimers by text.
      *
      * @return all disclaimers
      */
-    public List<DisclaimerDTO> getAllDisclaimers() {
+    public List<DisclaimerDTO> getAllDisclaimers(String text) {
         log.info("Getting all disclaimers");
-        return disclaimerRepository
-                .findAll()
-                .stream()
+        List<Disclaimer> disclaimers;
+        if (text != null) {
+            disclaimers = disclaimerRepository.findAllByTextContains(text);
+        } else {
+            disclaimers = disclaimerRepository.findAll();
+        }
+
+        return disclaimers.stream()
                 .map(DisclaimerDTO::new)
                 .toList();
     }

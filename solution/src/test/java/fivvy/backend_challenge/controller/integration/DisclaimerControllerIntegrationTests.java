@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,33 +30,6 @@ public class DisclaimerControllerIntegrationTests {
 
     @Autowired
     public ObjectMapper objectMapper;
-
-    private DisclaimerDTO getDisclaimerDTO(String name, String text, String version) {
-        DisclaimerDTO disclaimerDTO = new DisclaimerDTO();
-        disclaimerDTO.setName(name);
-        disclaimerDTO.setText(text);
-        disclaimerDTO.setVersion(version);
-        return disclaimerDTO;
-    }
-
-    private DisclaimerDTO getDisclaimerDTO(Long id, String name, String text,
-                                           String version) {
-        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(name, text, version);
-        disclaimerDTO.setId(id);
-        return disclaimerDTO;
-    }
-
-    private MvcResult creatBasiceDisclaimer() throws Exception {
-        return createDisclaimerWithName("John Doe");
-    }
-
-    private MvcResult createDisclaimerWithName(String name) throws Exception {
-        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(name, "a text", "1.0");
-        return mockMvc.perform(post("/disclaimer")
-                .content(objectMapper.writeValueAsString(disclaimerDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-    }
 
     @Test
     public void createDisclaimerSuccesfullyTest() throws Exception {
@@ -169,7 +143,7 @@ public class DisclaimerControllerIntegrationTests {
     @Test
     public void createAndGetAllDisclaimersSuccesfullyTest() throws Exception {
         creatBasiceDisclaimer();
-        createDisclaimerWithName("Jane Doe");
+        createDisclaimer("Jane Doe", "a text", "1.0");
 
         mockMvc.perform(get("/disclaimer"))
                 .andExpect(status().isOk())
@@ -185,5 +159,65 @@ public class DisclaimerControllerIntegrationTests {
                 .andExpect(jsonPath("$.[1].created_at").exists())
                 .andExpect(jsonPath("$.[1].updated_at").exists())
                 .andExpect(jsonPath("$.[1].text").value("a text"));
+    }
+
+    /**
+     * Creates two dislciamers and then gets one of them by filtering the text
+     */
+    @Test
+    public void createAndGetDisclaimerByFilterSuccesfullyTest() throws Exception {
+        creatBasiceDisclaimer();
+        createDisclaimer("Jane Doe", "jane's text", "1.0");
+
+        mockMvc.perform(get("/disclaimer?text=jane"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].id").exists())
+                .andExpect(jsonPath("$.[0].name").value("Jane Doe"))
+                .andExpect(jsonPath("$.[0].version").value("1.0"))
+                .andExpect(jsonPath("$.[0].created_at").exists())
+                .andExpect(jsonPath("$.[0].updated_at").exists())
+                .andExpect(jsonPath("$.[0].text").value("jane's text"));
+    }
+
+    /**
+     * Creates two disclaimers and gets none of them by filtering the text
+     */
+    @Test
+    public void createDisclaimersAndFitlerByTextAndGetNoneTest() throws Exception {
+        creatBasiceDisclaimer();
+        createDisclaimer("Jane Doe", "another text", "1.0");
+
+        MvcResult result = mockMvc.perform(get("/disclaimer?text=nonExistentText"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty())//;
+                .andReturn();
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    private DisclaimerDTO getDisclaimerDTO(String name, String text, String version) {
+        DisclaimerDTO disclaimerDTO = new DisclaimerDTO();
+        disclaimerDTO.setName(name);
+        disclaimerDTO.setText(text);
+        disclaimerDTO.setVersion(version);
+        return disclaimerDTO;
+    }
+
+    private DisclaimerDTO getDisclaimerDTO(Long id, String name, String text,
+                                           String version) {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(name, text, version);
+        disclaimerDTO.setId(id);
+        return disclaimerDTO;
+    }
+
+    private MvcResult creatBasiceDisclaimer() throws Exception {
+        return createDisclaimer("John Doe", "a text", "1.0");
+    }
+
+    private MvcResult createDisclaimer(String name, String text, String version) throws Exception {
+        DisclaimerDTO disclaimerDTO = getDisclaimerDTO(name, text, version);
+        return mockMvc.perform(post("/disclaimer")
+                        .content(objectMapper.writeValueAsString(disclaimerDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
     }
 }

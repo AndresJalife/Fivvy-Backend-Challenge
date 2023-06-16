@@ -1,4 +1,4 @@
-package fivvy.backend_challenge.exception.disclaimer;
+package fivvy.backend_challenge.exception;
 
 import fivvy.backend_challenge.configuration.MessageSourceConfigurer;
 
