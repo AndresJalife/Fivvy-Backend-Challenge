@@ -49,5 +49,6 @@ public class Disclaimer {
     public void update(DisclaimerDTO disclaimerDTO) {
         this.name = disclaimerDTO.getName();
         this.text = disclaimerDTO.getText();
-        this.version = disclaimerDTO.getVersion();}
+        this.version = disclaimerDTO.getVersion();
+    }
 }
