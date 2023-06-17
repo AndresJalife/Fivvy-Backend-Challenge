@@ -8,7 +8,7 @@ This is a solution for the Fivvy Backend Challenge [https://gitlab.com/fivvy_cha
 
 - The application is built using Java 17 and Spring Boot 3.1.0
 - The application is built using Maven
-- The database is PostgreSQL 13
+- The database is PostgreSQL 15.3
 - The application can be run using Docker
 - The application is configured to run on port 8081.
 - I have created a bundle inside the resources folder for internationalization. Right now the only language supported is English.
@@ -32,13 +32,15 @@ This is a solution for the Fivvy Backend Challenge [https://gitlab.com/fivvy_cha
 ### Prerequisites
 - Maven 3.8.3
 - Java 17
-- PostgreSQL 13
+- PostgreSQL 15.3
 
 ### Compile
 
 `mvn clean package -DSERVER=localhost -DDATABASE_USERNAME={postgres_user} -DDATABASE_PASSWORD={postgres_password} -DDATABASE_PORT={postgres_port}`
 
 ### Test
+
+- The application coverage is measured with Jacoco and has a 100% test coverage.
 
 `mvn clean test -DSERVER=localhost -DDATABASE_USERNAME={postgres_user} -DDATABASE_PASSWORD={postgres_password} -DDATABASE_PORT={postgres_port}`
 

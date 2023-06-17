@@ -1,8 +1,8 @@
 version: '3.7'
 services:
   postgres:
-    container_name: postgres:13
-    image: postgres
+    container_name: postgres
+    image: postgres:15.3
     user: root
     environment:
       - POSTGRES_USER=postgres
