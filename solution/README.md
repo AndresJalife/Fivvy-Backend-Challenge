@@ -46,6 +46,44 @@ This is a solution for the Fivvy Backend Challenge [https://gitlab.com/fivvy_cha
 
 ## Open API Documentation
 
-The Open API documentation is available at `https://app.swaggerhub.com/apis/AndresJalife/solution-api/1.0.0`
+The complete Open API documentation is available at `https://app.swaggerhub.com/apis/AndresJalife/solution-api/1.0.0`
 
 The Open API yaml can be found in this repository by the name `api-documentation.yaml`.
+
+A short summary of the endpoints is the following:
+
+- POST /disclaimer
+  - Creates a new disclaimer in the database.
+  - 200
+  
+- PATCH /disclaimer/{id}
+  - Updates the disclaimer with the id provided in the path.
+  - 200 if the disclaimer was updated successfully.
+  - 404 if the disclaimer was not found.
+  - 400 if it's missing the ID.
+  
+- DELETE /disclaimer/{id}
+  - Deletes the disclaimer with the id provided in the path.
+  - 200 if the disclaimer was deleted successfully.
+  - 404 if the disclaimer was not found.
+  
+- GET /disclaimer/{id}
+    - Returns the disclaimer with the id provided in the path.
+    - 200 if the disclaimer was found.
+    - 404 if the disclaimer was not found.
+  
+- GET /disclaimer
+  - Returns a list of all the disclaimers in the database.
+  - Optional parameter: text
+    - If the text parameter is included, the endpoint will return all the disclaimers that contain the text in the disclaimer's text.
+  - 200 
+  
+- GET /acceptance
+  - Returns a list of all the acceptances in the database.
+  - Optional parameter: user_id
+    - If the user_id parameter is included, the endpoint will return all the acceptances that belong to the user_id.
+  - 200
+  
+- POST /acceptance
+  - Creates a new acceptance in the database.
+  - 200

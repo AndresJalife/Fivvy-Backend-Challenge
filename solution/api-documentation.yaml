@@ -57,6 +57,8 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/DisclaimerDTO"
+        "404":
+          description: "Disclaimer not Found"
   /disclaimer/{id}:
     get:
       summary: "GET disclaimer/{id}"
@@ -75,6 +77,8 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/DisclaimerDTO"
+        "404":
+          description: "Disclaimer not Found"
     delete:
       summary: "DELETE disclaimer/{id}"
       operationId: "deleteDisclaimer"
@@ -92,6 +96,8 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/DisclaimerDTO"
+        "404":
+          description: "Disclaimer not Found"
   /acceptance:
     get:
       summary: "GET acceptance"
@@ -126,6 +132,8 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/AcceptanceDTO"
+        "404":
+          description: "Disclaimer not Found"
 components:
   schemas:
     DisclaimerDTO:
