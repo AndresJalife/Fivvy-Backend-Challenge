@@ -90,7 +90,7 @@ public class AcceptanceIntegrationTests {
     }
 
     /**
-     * Create tww acceptances and list them
+     * Create two acceptances and list them
      */
     @Test
     public void listAcceptancesSuccessfullyTest() throws Exception {
@@ -111,7 +111,7 @@ public class AcceptanceIntegrationTests {
     }
 
     /**
-     * Create two acceptances and list them by disclaimer filtering by user_id
+     * Create two acceptances and list them filtering by user_id
      */
     @Test
     public void listAcceptancesByDisclaimerFilteringByUserIdSuccessfullyTest() throws Exception {
@@ -125,5 +125,19 @@ public class AcceptanceIntegrationTests {
                 .andExpect(jsonPath("$.[0].disclaimer_id").value(disclaimerId))
                 .andExpect(jsonPath("$.[0].user_id").value(1L))
                 .andExpect(jsonPath("$.[0].create_at").exists());
+    }
+
+    /**
+     * List acceptances filtering by non-existing user_id
+     */
+    @Test
+    public void listAcceptancesByDisclaimerFilteringByNonExistingUserIdTest() throws Exception {
+        Integer disclaimerId = createDisclaimer();
+        createAcceptance(disclaimerId.longValue(), 1L);
+        createAcceptance(disclaimerId.longValue(), 2L);
+
+        mockMvc.perform(get("/acceptance?user_id=3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 }
