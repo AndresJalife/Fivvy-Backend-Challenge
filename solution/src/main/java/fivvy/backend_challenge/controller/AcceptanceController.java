@@ -1,4 +1,5 @@
 package fivvy.backend_challenge.controller;
+
 import fivvy.backend_challenge.dto.AcceptanceDTO;
 import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
 import fivvy.backend_challenge.service.AcceptanceService;
@@ -32,9 +33,15 @@ public class AcceptanceController {
 
     /**
      * Lists all the acceptances
+     * Filter by user id if provided
+     *
+     * @param userId the user id to filter
+     * @return ResponseEntity:
+     * * * OK(200) - When successfully listed.
      */
     @GetMapping
-    public ResponseEntity<Iterable<AcceptanceDTO>> listAcceptances() {
-        return ResponseEntity.ok(acceptanceService.listAcceptances());
+    public ResponseEntity<Iterable<AcceptanceDTO>> listAcceptances(
+            @RequestParam(value = "user_id", required = false) Long userId) {
+        return ResponseEntity.ok(acceptanceService.listAcceptances(userId));
     }
 }

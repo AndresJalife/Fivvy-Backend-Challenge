@@ -39,12 +39,18 @@ public class AcceptanceService {
     }
 
     /**
-     * Lists all the acceptances
+     * Lists all the acceptances.
+     * Filter by user id if provided
      */
-    public List<AcceptanceDTO> listAcceptances() {
+    public List<AcceptanceDTO> listAcceptances(Long userId) {
         log.info("Listing acceptances");
-        return acceptanceRepository
-                .findAll()
+        List<Acceptance> acceptances;
+        if (userId == null) {
+            acceptances = acceptanceRepository.findAll();
+        } else {
+            acceptances = acceptanceRepository.findAllByUserId(userId);
+        }
+        return acceptances
                 .stream()
                 .map(AcceptanceDTO::new)
                 .toList();

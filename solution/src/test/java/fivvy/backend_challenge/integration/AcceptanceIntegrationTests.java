@@ -109,4 +109,21 @@ public class AcceptanceIntegrationTests {
                 .andExpect(jsonPath("$.[1].user_id").value(2L))
                 .andExpect(jsonPath("$.[1].create_at").exists());
     }
+
+    /**
+     * Create two acceptances and list them by disclaimer filtering by user_id
+     */
+    @Test
+    public void listAcceptancesByDisclaimerFilteringByUserIdSuccessfullyTest() throws Exception {
+        Integer disclaimerId = createDisclaimer();
+        createAcceptance(disclaimerId.longValue(), 1L);
+        createAcceptance(disclaimerId.longValue(), 2L);
+
+        mockMvc.perform(get("/acceptance?user_id=1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$.[0].disclaimer_id").value(disclaimerId))
+                .andExpect(jsonPath("$.[0].user_id").value(1L))
+                .andExpect(jsonPath("$.[0].create_at").exists());
+    }
 }
