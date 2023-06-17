@@ -27,7 +27,7 @@ public class AcceptanceController {
      * * * CREATED(201) - When successfully created.
      */
     @PostMapping
-    public ResponseEntity<AcceptanceDTO> createDisclaimer(@RequestBody AcceptanceDTO acceptanceDTO) throws DisclaimerNotFoundException {
+    public ResponseEntity<AcceptanceDTO> createAcceptance(@RequestBody AcceptanceDTO acceptanceDTO) throws DisclaimerNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(acceptanceService.createAcceptance(acceptanceDTO));
     }
 

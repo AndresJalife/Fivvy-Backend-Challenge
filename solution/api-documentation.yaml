@@ -8,7 +8,7 @@ servers:
 paths:
   /disclaimer:
     get:
-      summary: "GET disclaimer"
+      summary: "GET all disclaimer"
       operationId: "getAllDisclaimers"
       parameters:
         - name: "text"
@@ -112,7 +112,7 @@ paths:
                 $ref: "#/components/schemas/AcceptanceDTO"
     post:
       summary: "POST acceptance"
-      operationId: "createDisclaimer"
+      operationId: "createAcceptance"
       requestBody:
         content:
           application/json:
