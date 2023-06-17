@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15.3
+    user: root
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "10123:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  app:
+    depends_on:
+      - postgres
+    container_name: backend_challenge
+    image: openjdk:17
+    volumes:
+      - ./backend_challenge.jar:/app/backend_challenge.jar
+    working_dir: /app
+    command: java -jar backend_challenge.jar
+    ports:
+      - '8081:8080'
+    environment:
+      - SERVER=postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PORT=5432
+
+volumes:
+    postgres-data:
+        driver: local
