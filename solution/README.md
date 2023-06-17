@@ -11,11 +11,12 @@ This is a solution for the Fivvy Backend Challenge [https://gitlab.com/fivvy_cha
 - The database is PostgreSQL 15.3
 - The application can be run using Docker
 - The application is configured to run on port 8081.
+- The application test coverage is measured with Jacoco and is 100%.
+- I have not included unit tests because of the time. I have included integration tests instead.
 - I have created a bundle inside the resources folder for internationalization. Right now the only language supported is English.
 - I have created a custom exception handler to handle all the exceptions and return a proper response to the client.
 - The user_id related to the acceptance entity is not being linked to a user entity given that the user entity is not part of the challenge.
 - The optional parameter for the text in the disclaimer LIST endpoint is a string that can be included in the Disclaimer's text but not necessarily the same.
-- I have not included unit tests because of the time. I have included integration tests instead.
 - The application is configured to create the database and the tables on startup and drop them on shutdown.
   - This is an attributed that can be changed in the application.properties file [spring.jpa.hibernate.ddl-auto]
   - It is configured this way because it is just a challenge and this way the Database can be used to show the funcionality and run the tests at the same time.
@@ -39,8 +40,6 @@ This is a solution for the Fivvy Backend Challenge [https://gitlab.com/fivvy_cha
 `mvn clean package -DSERVER=localhost -DDATABASE_USERNAME={postgres_user} -DDATABASE_PASSWORD={postgres_password} -DDATABASE_PORT={postgres_port}`
 
 ### Test
-
-- The application coverage is measured with Jacoco and has a 100% test coverage.
 
 `mvn clean test -DSERVER=localhost -DDATABASE_USERNAME={postgres_user} -DDATABASE_PASSWORD={postgres_password} -DDATABASE_PORT={postgres_port}`
 
