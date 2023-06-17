@@ -1,0 +1,160 @@
+openapi: "3.0.3"
+info:
+  title: "solution API"
+  description: "solution API"
+  version: "1.0.0"
+servers:
+  - url: "https://solution"
+paths:
+  /disclaimer:
+    get:
+      summary: "GET disclaimer"
+      operationId: "getAllDisclaimers"
+      parameters:
+        - name: "text"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/DisclaimerDTO"
+    post:
+      summary: "POST disclaimer"
+      operationId: "createDisclaimer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisclaimerDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DisclaimerDTO"
+    patch:
+      summary: "PATCH disclaimer"
+      operationId: "updateDisclaimer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisclaimerDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DisclaimerDTO"
+  /disclaimer/{id}:
+    get:
+      summary: "GET disclaimer/{id}"
+      operationId: "getDisclaimer"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DisclaimerDTO"
+    delete:
+      summary: "DELETE disclaimer/{id}"
+      operationId: "deleteDisclaimer"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DisclaimerDTO"
+  /acceptance:
+    get:
+      summary: "GET acceptance"
+      operationId: "listAcceptances"
+      parameters:
+        - name: "user_id"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AcceptanceDTO"
+    post:
+      summary: "POST acceptance"
+      operationId: "createDisclaimer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcceptanceDTO"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AcceptanceDTO"
+components:
+  schemas:
+    DisclaimerDTO:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        text:
+          type: "string"
+        version:
+          type: "string"
+        created_at:
+          type: "integer"
+          format: "int64"
+        updated_at:
+          type: "integer"
+          format: "int64"
+    AcceptanceDTO:
+      type: "object"
+      properties:
+        disclaimer_id:
+          type: "integer"
+          format: "int64"
+        user_id:
+          type: "integer"
+          format: "int64"
+        create_at:
+          type: "integer"
+          format: "int64"
