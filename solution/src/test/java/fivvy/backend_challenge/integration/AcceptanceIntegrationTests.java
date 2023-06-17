@@ -60,4 +60,20 @@ public class AcceptanceIntegrationTests {
                     .andExpect(jsonPath("$.user_id").value(1L))
                     .andExpect(jsonPath("$.create_at").exists());
     }
+
+    /**
+     * Tests the creation of an acceptance with a non existing disclaimer
+     */
+    @Test
+    public void createAcceptanceWithNonExistingDisclaimer() throws Exception {
+        AcceptanceDTO acceptanceDTO = new AcceptanceDTO();
+        acceptanceDTO.setDisclaimerId(1L);
+        acceptanceDTO.setUserId(1L);
+
+        mockMvc.perform(post("/acceptance")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(acceptanceDTO)))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    }
 }

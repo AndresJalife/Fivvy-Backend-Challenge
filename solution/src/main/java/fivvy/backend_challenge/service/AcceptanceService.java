@@ -1,6 +1,7 @@
 package fivvy.backend_challenge.service;
 
 import fivvy.backend_challenge.dto.AcceptanceDTO;
+import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
 import fivvy.backend_challenge.model.Acceptance;
 import fivvy.backend_challenge.repository.AcceptanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AcceptanceService {
     private final AcceptanceRepository acceptanceRepository;
+    private final DisclaimerService disclaimerService;
 
     /**
      * Creates an acceptance
@@ -25,11 +27,12 @@ public class AcceptanceService {
      * @return the created acceptance
      */
     @Transactional
-    public AcceptanceDTO createAcceptance(AcceptanceDTO acceptanceDTO) {
+    public AcceptanceDTO createAcceptance(AcceptanceDTO acceptanceDTO) throws DisclaimerNotFoundException {
         log.info("Creating acceptance");
-        System.out.println(acceptanceDTO);
+        if (!disclaimerService.checkDisclaimerExists(acceptanceDTO.getDisclaimerId())) {
+            throw new DisclaimerNotFoundException();
+        }
         Acceptance acceptance = acceptanceRepository.save(new Acceptance(acceptanceDTO));
-        System.out.println(acceptance);
         return new AcceptanceDTO(acceptance);
     }
 }

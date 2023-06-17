@@ -1,5 +1,6 @@
 package fivvy.backend_challenge.controller;
 import fivvy.backend_challenge.dto.AcceptanceDTO;
+import fivvy.backend_challenge.exception.DisclaimerNotFoundException;
 import fivvy.backend_challenge.service.AcceptanceService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class AcceptanceController {
      * * * CREATED(201) - When successfully created.
      */
     @PostMapping
-    public ResponseEntity<AcceptanceDTO> createDisclaimer(@RequestBody AcceptanceDTO acceptanceDTO) {
+    public ResponseEntity<AcceptanceDTO> createDisclaimer(@RequestBody AcceptanceDTO acceptanceDTO) throws DisclaimerNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(acceptanceService.createAcceptance(acceptanceDTO));
     }
 }

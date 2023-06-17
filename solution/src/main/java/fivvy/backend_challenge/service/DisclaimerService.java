@@ -107,4 +107,14 @@ public class DisclaimerService {
                 .map(DisclaimerDTO::new)
                 .toList();
     }
+
+    /**
+     * Checks if a disclaimer exists
+     *
+     * @param disclaimerId the id of the disclaimer to check
+     * @return true if the disclaimer exists, false otherwise
+     */
+    public Boolean checkDisclaimerExists(Long disclaimerId) {
+        return disclaimerRepository.existsById(disclaimerId);
+    }
 }
