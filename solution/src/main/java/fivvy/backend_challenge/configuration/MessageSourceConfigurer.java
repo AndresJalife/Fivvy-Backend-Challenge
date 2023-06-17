@@ -16,7 +16,7 @@ public class MessageSourceConfigurer extends ResourceBundleMessageSource {
      */
     public MessageSourceConfigurer() {
         super();
-        this.setBasenames("bundles/i18n-bundles");
+        this.setBasenames("bundles/i18n-bundles-en");
     }
 
     /**
