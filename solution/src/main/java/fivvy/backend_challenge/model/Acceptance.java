@@ -24,10 +24,6 @@ public class Acceptance {
     @Column(name = "create_at")
     private Timestamp createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "disclaimer_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Disclaimer disclaimer;
-
     /**
      * Constructor from a AcceptanceDTO
      */

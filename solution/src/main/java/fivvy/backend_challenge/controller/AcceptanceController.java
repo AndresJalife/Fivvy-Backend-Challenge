@@ -21,12 +21,20 @@ public class AcceptanceController {
     /**
      * Creates an acceptance
      *
-     * @param acceptanceDTO
+     * @param acceptanceDTO the acceptance to create
      * @return ResponseEntity:
      * * * CREATED(201) - When successfully created.
      */
     @PostMapping
     public ResponseEntity<AcceptanceDTO> createDisclaimer(@RequestBody AcceptanceDTO acceptanceDTO) throws DisclaimerNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(acceptanceService.createAcceptance(acceptanceDTO));
+    }
+
+    /**
+     * Lists all the acceptances
+     */
+    @GetMapping
+    public ResponseEntity<Iterable<AcceptanceDTO>> listAcceptances() {
+        return ResponseEntity.ok(acceptanceService.listAcceptances());
     }
 }

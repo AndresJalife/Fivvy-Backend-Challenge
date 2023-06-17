@@ -22,7 +22,6 @@ public class AcceptanceDTO {
     @JsonProperty("user_id")
     private Long userId;
 
-    @Setter
     @JsonProperty("create_at")
     private Long createdAt;
 

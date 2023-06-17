@@ -12,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,48 +34,79 @@ public class AcceptanceIntegrationTests {
     public ObjectMapper objectMapper;
 
     /**
-     * Tests the creation of an acceptance
+     * Creates a disclaimer with a name
      */
-    @Test
-    public void createAcceptance() throws Exception {
+    private Integer createDisclaimer() throws Exception {
         DisclaimerDTO disclaimerDTO = new DisclaimerDTO();
-        disclaimerDTO.setName("Test Disclaimer");
+        disclaimerDTO.setName("a name");
         disclaimerDTO.setText("a text");
 
         MvcResult mvcResult = mockMvc.perform(post("/disclaimer")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(disclaimerDTO)))
-                    .andExpect(status().isCreated())
-                    .andReturn();
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(disclaimerDTO)))
+                .andExpect(status().isCreated())
+                .andReturn();
 
-        Integer disclaimerId = JsonPath.read(mvcResult.getResponse().getContentAsString(),
+
+        return JsonPath.read(mvcResult.getResponse().getContentAsString(),
                 "$.id");
+    }
+
+    /**
+     * Create acceptance with a disclaimer.
+     * Returns the ResultActions
+     */
+    private ResultActions createAcceptance(Long disclaimerId, Long userId) throws Exception {
         AcceptanceDTO acceptanceDTO = new AcceptanceDTO();
         acceptanceDTO.setDisclaimerId(disclaimerId.longValue());
-        acceptanceDTO.setUserId(1L);
+        acceptanceDTO.setUserId(userId.longValue());
 
-        mockMvc.perform(post("/acceptance")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(acceptanceDTO)))
-                    .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.disclaimer_id").value(disclaimerId))
-                    .andExpect(jsonPath("$.user_id").value(1L))
-                    .andExpect(jsonPath("$.create_at").exists());
+        return mockMvc.perform(post("/acceptance")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(acceptanceDTO)));
+    }
+
+    /**
+     * Tests the creation of an acceptance
+     */
+    @Test
+    public void createAcceptanceSuccesfullyTest() throws Exception {
+        Integer disclaimerId = createDisclaimer();
+        createAcceptance(disclaimerId.longValue(), 1L)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.disclaimer_id").value(disclaimerId))
+                .andExpect(jsonPath("$.user_id").value(1L))
+                .andExpect(jsonPath("$.create_at").exists());
     }
 
     /**
      * Tests the creation of an acceptance with a non existing disclaimer
      */
     @Test
-    public void createAcceptanceWithNonExistingDisclaimer() throws Exception {
-        AcceptanceDTO acceptanceDTO = new AcceptanceDTO();
-        acceptanceDTO.setDisclaimerId(1L);
-        acceptanceDTO.setUserId(1L);
+    public void createAcceptanceWithNonExistingDisclaimerTest() throws Exception {
+        createAcceptance(1L, 1L)
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    }
 
-        mockMvc.perform(post("/acceptance")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(acceptanceDTO)))
-                    .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.error").value("Disclaimer not found"));
+    /**
+     * Create tww acceptances and list them
+     */
+    @Test
+    public void listAcceptancesSuccessfullyTest() throws Exception {
+        Integer disclaimerId = createDisclaimer();
+
+        createAcceptance(disclaimerId.longValue(), 1L);
+        createAcceptance(disclaimerId.longValue(), 2L);
+
+        mockMvc.perform(get("/acceptance"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$.[0].disclaimer_id").value(disclaimerId))
+                .andExpect(jsonPath("$.[0].user_id").value(1L))
+                .andExpect(jsonPath("$.[0].create_at").exists())
+                .andExpect(jsonPath("$.[1].disclaimer_id").value(disclaimerId))
+                .andExpect(jsonPath("$.[1].user_id").value(2L))
+                .andExpect(jsonPath("$.[1].create_at").exists());
     }
 }

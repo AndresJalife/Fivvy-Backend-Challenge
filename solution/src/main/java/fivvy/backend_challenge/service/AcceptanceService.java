@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Service for acceptances
  */
@@ -34,5 +36,17 @@ public class AcceptanceService {
         }
         Acceptance acceptance = acceptanceRepository.save(new Acceptance(acceptanceDTO));
         return new AcceptanceDTO(acceptance);
+    }
+
+    /**
+     * Lists all the acceptances
+     */
+    public List<AcceptanceDTO> listAcceptances() {
+        log.info("Listing acceptances");
+        return acceptanceRepository
+                .findAll()
+                .stream()
+                .map(AcceptanceDTO::new)
+                .toList();
     }
 }
